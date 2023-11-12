@@ -1,0 +1,8 @@
+[meme]
+load_builtin_memes = true  # 是否加载内置表情包
+meme_dirs = []  # 加载其他位置的表情包，填写文件夹路径
+meme_disabled_list = []  # 禁用的表情包列表，填写表情的 `key`
+
+[server]
+host = "0.0.0.0"  # web server 监听地址
+port = 2233  # web server 端口

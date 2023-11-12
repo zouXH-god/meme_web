@@ -1,14 +1,19 @@
+import base64
+import json
 from typing import Any, Dict, List, Literal, Optional, Tuple
 
 import filetype
+import httpx
+import requests
 from fastapi import Depends, FastAPI, Form, HTTPException, Response, UploadFile
+from fastapi.responses import HTMLResponse
 from pil_utils.types import ColorType, FontStyle, FontWeight
 from pydantic import BaseModel, ValidationError
 
 from meme_generator.config import meme_config
 from meme_generator.exception import MemeGeneratorException, NoSuchMeme
 from meme_generator.log import LOGGING_CONFIG, setup_logger
-from meme_generator.manager import get_meme, get_meme_keys, get_memes
+from meme_generator.manager import get_meme, get_meme_keys, get_memes, get_meme_keywords
 from meme_generator.meme import Meme, MemeArgsModel
 from meme_generator.utils import TextProperties, render_meme_list
 
@@ -39,6 +44,8 @@ class MemeInfoResponse(BaseModel):
     params: MemeParamsResponse
 
 
+
+
 def register_router(meme: Meme):
     if args_type := meme.params_type.args_type:
         args_model = args_type.model
@@ -56,13 +63,21 @@ def register_router(meme: Meme):
 
     @app.post(f"/memes/{meme.key}/")
     async def _(
-        images: List[UploadFile] = [],
-        texts: List[str] = meme.params_type.default_texts,
-        args: args_model = Depends(args_checker),  # type: ignore
+            images: List[UploadFile] = [],
+            images_base64: List[str] = [],
+            texts: List[str] = meme.params_type.default_texts,
+            texts_json: List[str] = [],
+            res: List[str] = [],
+            args: args_model = Depends(args_checker),  # type: ignore
     ):
+        if texts_json:
+            texts = json.loads(texts_json[0])
         imgs: List[bytes] = []
         for image in images:
             imgs.append(await image.read())
+        if images_base64:
+            for image_base64 in json.loads(images_base64[0]):
+                imgs.append(base64.b64decode(image_base64))
 
         texts = [text for text in texts if text]
 
@@ -74,6 +89,9 @@ def register_router(meme: Meme):
             raise HTTPException(status_code=e.status_code, detail=str(e))
 
         content = result.getvalue()
+        print(res)
+        if res:
+            return base64.b64encode(content)
         media_type = str(filetype.guess_mime(content)) or "text/plain"
         return Response(content=content, media_type=media_type)
 
@@ -107,6 +125,26 @@ class RenderMemeListRequest(BaseModel):
 
 
 def register_routers():
+    @app.get("/")
+    @app.get("/memes/make")
+    def _():
+        with open("templates/make.html", "r") as fp:
+            html = fp.read()
+        return HTMLResponse(html)
+
+    @app.get("/memes/get_img")
+    async def _(qq: str = "", url: str = ""):
+        if qq:
+            url = f"http://q1.qlogo.cn/g?b=qq&nk={qq}&s=640"
+            resize_url = ""
+        else:
+            resize_url = "https://api.s1f.top/img_resize?w=320&url="
+        async with httpx.AsyncClient() as client:
+            response = await client.get(resize_url + url, timeout=60)
+        content = response.content
+        media_type = str(filetype.guess_mime(content)) or "text/plain"
+        return Response(content=content, media_type=media_type)
+
     @app.post("/memes/render_list")
     def _(params: RenderMemeListRequest = RenderMemeListRequest()):
         try:
@@ -141,6 +179,10 @@ def register_routers():
         content = result.getvalue()
         media_type = str(filetype.guess_mime(content)) or "text/plain"
         return Response(content=content, media_type=media_type)
+
+    @app.get("/memes/keywords")
+    def _():
+        return get_meme_keywords()
 
     @app.get("/memes/keys")
     def _():
@@ -189,6 +231,7 @@ def register_routers():
     async def _(key: str):
         try:
             meme = get_meme(key)
+            # 返回值为byteIO
             result = await meme.generate_preview()
         except MemeGeneratorException as e:
             raise HTTPException(status_code=e.status_code, detail=str(e))
@@ -198,7 +241,9 @@ def register_routers():
         return Response(content=content, media_type=media_type)
 
     @app.post("/memes/{key}/parse_args")
-    async def _(key: str, args: List[str] = []):
+    async def _(key: str, args=None):
+        if args is None:
+            args = []
         try:
             meme = get_meme(key)
             return meme.parse_args(args)

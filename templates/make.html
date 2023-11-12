@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表情包工坊</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="自动制作表情包的工坊，提供200多种分类，轻松制作您自己的表情包。">
+
+
+<meta name="keywords" content="表情包, 表情包制作, 自动制作表情包, 表情包工坊">
+    <meta name="author" content="释然">
+    <meta property="og:title" content="表情包制作工坊">
+    <meta property="og:description" content="自动制作表情包的工坊，提供200多种分类，轻松制作您自己的表情包。">
+    <meta property="og:url" content="https://meme.miheyo.icu/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="表情包制作工坊">
+    <meta name="twitter:description" content="自动制作表情包的工坊，提供200多种分类，轻松制作您自己的表情包。">
+    <script>
+    !function(p){"use strict";!function(t){var s=window,e=document,i=p,c="".concat("https:"===e.location.protocol?"https://":"http://","sdk.51.la/js-sdk-pro.min.js"),n=e.createElement("script"),r=e.getElementsByTagName("script")[0];n.type="text/javascript",n.setAttribute("charset","UTF-8"),n.async=!0,n.src=c,n.id="LA_COLLECT",i.d=n;var o=function(){s.LA.ids.push(i)};s.LA?s.LA.ids&&o():(s.LA=p,s.LA.ids=[],o()),r.parentNode.insertBefore(n,r)}()}({id:"KBIpWUjhw2fkyo0a",ck:"KBIpWUjhw2fkyo0a",autoTrack:true,hashMode:true});
+    </script>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.staticfile.org/vue/2.7.13/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.7.1/jquery.min.js"></script>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap-theme.min.css"
+          integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        body {
+            background-image: url(https://s1.hdslb.com/bfs/static/stone-free/dyn-home/assets/bg.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            position: relative;
+            width: 100%;
+            background-attachment: fixed;
+        }
+
+        .body {
+            width: 1000px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            background-color: #fff8;
+            min-height: 100%;
+            padding-bottom: 32px;
+            backdrop-filter: blur(12px);
+            box-shadow: #fff 0 0 11px;
+        }
+
+        .header_img {
+            max-width: 100px;
+            max-height: 100px;
+        }
+
+        .show_box img {
+            max-width: 320px;
+            max-height: 320px;
+            border-radius: 8px;
+            box-shadow: #80ecc8 0px 0px 9px;
+        }
+        
+        .top{
+            height: 64px;
+            background-color: #e4ecff;
+            width: 100%;
+            border-radius: 0 0 32px 32px;
+            display: flex;
+            box-shadow: black 0 0 15px;
+            margin-bottom: 32px;
+        }
+        .top-title{
+            height: 64px;
+            text-align: center;
+            line-height: 64px;
+            padding: 0 20px;
+            font-size: 24px;
+        }
+        .top-list{
+            height: 64px;
+            text-align: center;
+            line-height: 64px;
+            padding: 0 20px;
+            font-size: 13px;
+        }
+        .left {
+        }
+
+        .img_box, .text_box {
+            background-color: #fff9;
+            border-radius: 8px;
+            padding: 5px 32px 5px 5px;
+            margin: 8px 0;
+            box-shadow: #d9d8ff 0 0 8px 0px;
+        }
+
+        .img_select, .text_val {
+            display: flex;
+            white-space: nowrap;
+        }
+
+        .loading-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-color: #0003;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #3498db; /* 动画的颜色 */
+            border-radius: 50%;
+            animation: spin 1s linear infinite; /* 使用 spin 动画 */
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .img_box_info{
+            font-size: 13px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+    </style>
+</head>
+<body>
+<div class="body" id="body">
+    <div class="top">
+        <div class="top-title">逝与逢表情工坊</div>
+        <div class="top-list"><a href="http://li.xin-hao.top/" target="_blank">个人主页</a></div>
+    </div>
+    <div class="left">
+        <label for="keys">表情选择：</label>
+        <input class="form-control input-sm" type="text" v-model="select_key" placeholder="输入关键字进行筛选">
+        <select class="form-control input-sm" name="keys" id="keys" v-model="key_select" @change="get_key_info">
+            <option v-if="key_screen(keyword_list[index])" :value="key" v-for="(key, index) in key_list">{{keyword_list[index]}}</option>
+        </select>
+        <div class="img_box form-horizontal" v-for="(img, index) in img_list">
+            <h5 class="img_box_info">三项选择一项填写</h5>
+            <div class="img_select form-group">
+                <label for="qq_id" class="col-sm-4 control-label">QQ：</label>
+                <input class="col-sm-8 form-control" placeholder="输入QQ，使用QQ头像制作" v-model="header_img_data[index].qq" type="text" id="qq_id"
+                       @change="set_header_img('qq', index)">
+            </div>
+            <div class="img_select form-group">
+                <label for="img_url" class="col-sm-4 control-label">链接：</label>
+                <input class="col-sm-8 form-control" placeholder="图片链接，使用网络图片制作" v-model="header_img_data[index].url" type="text" id="img_url"
+                       @change="set_header_img('url', index)">
+            </div>
+            <div class="img_select form-group">
+                <label for="img_file" class="col-sm-4 control-label">图片：</label>
+                <input accept="image/*" class="col-sm-8 btn btn-default" type="file" id="img_file"
+                       @change="set_header_img('img', index, $event)">
+            </div>
+            <div class="img_show">
+                <img class="header_img" :src="header_img_data[index].url" alt="">
+            </div>
+        </div>
+        <div class="text_box form-horizontal" v-for="(text, index) in text_list">
+            <div class="text_val form-group">
+                <label for="text_input" class="col-sm-4 control-label">文本内容</label>
+                <input class="col-sm-8 form-control" type="text" id="text_input" v-model="text_list[index]">
+            </div>
+        </div>
+        <div class="make_box">
+            <input type="button" v-if="this.img_ready" class="make_begin btn btn-info" value="开始制作"
+                   @click="update_make">
+            <input type="button" v-else disabled class="make_begin btn btn-warning" value="图片正在上传">
+        </div>
+    </div>
+    <div class="right">
+        <div class="show_box">
+            <img :src="img_src" alt="">
+        </div>
+    </div>
+    <div class="loading-container" v-if="this.img_make">
+        <div class="spinner"></div>
+        <div class="spinner_text">图片制作中~(^-^)~</div>
+    </div>
+</div>
+</body>
+
+
+<script>
+    var app = new Vue({
+        el: '#body',
+        data: {
+            num: 0,
+            key_list: [],
+            keyword_list: [],
+            key_select: "",
+            header_img_data: [],
+            img_src: "",
+            img_list: [],
+            text_list: [],
+            img_ready: true,
+            img_make: false,
+            img_info: null,
+            select_key: ""
+        },
+        mounted: function () {
+            $.get("/memes/keys", (data) => {
+                this.key_list = data
+                this.key_select = data[0]
+                this.get_key_info()
+            })
+            $.get("/memes/keywords", (data) => {
+                this.keyword_list = data
+            })
+        },
+        methods: {
+            // 获取表情包参数详情
+            get_key_info: function () {
+                console.log(this.key_select)
+                // 获取参数内容
+                $.get("/memes/" + this.key_select + "/info", (data) => {
+                    this.img_info = data
+                    this.img_list = []
+                    this.header_img_src = []
+                    this.header_img_data = []
+                    this.text_list = []
+                    for (var i = 0; i < data.params.max_images; i++) {
+                        this.img_list.push(null)
+                        this.header_img_src.push("")
+                        this.header_img_data.push({
+                            "qq": "",
+                            "url": "",
+                            "img": null
+                        })
+                    }
+                    for (var i = 0; i < data.params.max_texts; i++) {
+                        this.text_list.push("")
+                    }
+                    if (data.params.default_texts.length >= 1) {
+                        this.text_list = data.params.default_texts
+                    }
+
+                })
+                // 获取样例图片
+                this.img_src = "/memes/" + this.key_select + "/preview"
+            },
+            // 二进制图片渲染
+            set_img_info: function (data) {
+                var blob = new Blob([data], {type: 'image/jpeg'});
+                var imageURL = URL.createObjectURL(blob);
+                this.img_src = imageURL; // 使用外部的img变量
+            },
+            // 图片添加，修改
+            set_header_img: function (img_type, index, ele = null) {
+                this.img_ready = false
+                if (img_type == "qq") {
+                    this.header_img_data[index].url = "/memes/get_img?qq=" + this.header_img_data[index].qq
+                    this.send_img_request(this.header_img_data[index].url, request_type = "GET", (data) => {
+                        this.header_img_data[index].img = arrayBufferToBase64(data)
+                        this.img_ready = true
+                    })
+                } else if (img_type == "url") {
+                    this.send_img_request("/memes/get_img?url=" + this.header_img_data[index].url, request_type = "GET", (data) => {
+                        this.header_img_data[index].img = arrayBufferToBase64(data)
+                        this.img_ready = true
+                    })
+                } else if (img_type == "img") {
+                    const file = ele.target.files[0];
+                    console.log(ele)
+                    if (file) {
+                        const maxSizeInBytes = 1024 * 1024; // 1MB 的字节数
+                        if (file.size > maxSizeInBytes) {
+                            alert('文件大小超过限制（最大 5MB）。请重新选择。');
+                            ele.target.value = ''; // 清空文件选择
+                            this.img_ready = true
+                            return
+                        }
+                    }
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        this.header_img_data[index].img = arrayBufferToBase64(event.target.result);
+                        this.header_img_data[index].url = "data:image/png;base64," + this.header_img_data[index].img;
+                        this.img_ready = true
+                    };
+                    reader.readAsArrayBuffer(file);
+                    ele.target.value = '';
+                }
+
+            },
+            // 发送一个图片请求
+            send_img_request: function (url, request_type = "POST", callback) {
+
+                fetch(url, {method: request_type})
+                    .then(response => response.arrayBuffer())
+                    .then(data => {
+                        callback(data)
+                    })
+                    .catch(error => {
+                        console.error('Error fetching image:', error);
+                    });
+            },
+            // 制作图片
+            update_make: function () {
+                if (!this.img_ready) {
+                    return
+                }
+                var url = "/memes/" + this.key_select + "/"
+
+                // Append images
+                var images_base64_list = []
+                this.header_img_data.forEach(image => {
+                    images_base64_list.push(image.img)
+                });
+
+                var data = {
+                    "res": JSON.stringify(["base64"])
+                }
+                if (images_base64_list.length >= 1) {
+                    data['images_base64'] = JSON.stringify(images_base64_list);
+                    // formData.append('images_base64_json', JSON.stringify(images_base64_list));
+                }
+                if (this.text_list.length >= 1) {
+                    data['texts_json'] = JSON.stringify(this.text_list);
+                    // formData.append('images_base64_json', JSON.stringify(images_base64_list));
+                }
+
+                this.img_make = true
+                $.ajax(url, {
+                    data: data,
+                    type: "POST",
+                    success: (data) => {
+                        this.img_make = false
+                        console.log(data)
+                        this.img_src = "data:image/png;base64," + data
+
+                    },
+                    complete: ()=>{
+                        this.img_make = false
+                    }
+                })
+
+            },
+            // 关键字筛选
+            key_screen: function (key){
+                if(key){
+                    return key.includes(this.select_key);
+                }
+
+            }
+        }
+    })
+
+    function arrayBufferToBase64(buffer) {
+        let binary = '';
+        let bytes = new Uint8Array(buffer);
+        for (let i = 0; i < bytes.byteLength; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return window.btoa(binary);
+    }
+</script>
+
+</html>

@@ -102,3 +102,10 @@ def get_memes() -> List[Meme]:
 
 def get_meme_keys() -> List[str]:
     return list(_memes.keys())
+
+
+def get_meme_keywords() -> List[str]:
+    keywords = []
+    for key in list(_memes.keys()):
+        keywords.append(_memes[key].keywords[0])
+    return keywords
