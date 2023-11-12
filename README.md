@@ -2,12 +2,22 @@
 ## 本项目基于 MeetWq/meme-generator 的web端实现，原仓库地址：https://github.com/MeetWq/meme-generator
 
 ## 安装
-克隆当前仓库：
-
+### 克隆当前仓库：
 ```bash
 git clone https://github.com/zouXH-god/meme_web.git
 ```
-
+### 安装python依赖
+** 注：python版本需>3.8 **
+① `cd meme_web` 将目录切换到项目根目录
+② 安装poetry
+```bash
+pip install poetry
+```
+③ 安装依赖
+```bash
+poetry install
+```
+④ 运行
 通过 `python -m meme_generator.app` 运行 web 服务器
 
 
