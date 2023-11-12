@@ -7,7 +7,7 @@
 git clone https://github.com/zouXH-god/meme_web.git
 ```
 ### 安装python依赖
-** 注：python版本需>3.8 **
+#### 注：python版本需>3.8
 
 ① `cd meme_web` 将目录切换到项目根目录
 
