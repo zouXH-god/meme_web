@@ -1,7 +1,3 @@
-<div align="center">
-
-<img src="https://s2.loli.net/2023/03/26/4URd1BKj3ToycLl.png" width=200 />
-
 # meme-web
 ## 本项目基于 MeetWq/meme-generator 的web端实现，原仓库地址：https://github.com/MeetWq/meme-generator
 
